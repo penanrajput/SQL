@@ -250,7 +250,7 @@ Copyright (C) 2022 Penan Rajput
             ```
             DELETE FROM products_2 
             where qty in (300,200);
-                ```
+            ```
         3. Delete *all records* from a table (without dropping the table itself):  
             ```
             DELETE FROM [table];
@@ -327,11 +327,15 @@ Copyright (C) 2022 Penan Rajput
             SELECT distinct name, email, acception FROM owners WHERE acception = 1 AND date >= 2015-01-01 00:00:00
             ```
         11. SELECT INTO copies the specified data from one table into another.
+            ```
             SELECT * INTO customers
             FROM customers_backup;
+            ```
 
         12. SELECT TOP only returns the top x number or percent from a table.
+            ```
             SELECT TOP 50 * FROM customers;
+            ```
 
           
         13. AS Rename column or table using an _alias_: 
@@ -394,21 +398,26 @@ Copyright (C) 2022 Penan Rajput
             select * from products where rating not in (3,5);
             ```
     2. IS NULL will return only rows with a NULL value.
-            SELECT name
-            FROM customers
-            WHERE name IS NULL;
+        ```
+        SELECT name
+        FROM customers
+        WHERE name IS NULL;
+        ```
     3. IS NOT NULL
-            SELECT name
-            FROM customers
-            WHERE name IS NOT NULL;
-
+        ```
+        SELECT name
+        FROM customers
+        WHERE name IS NOT NULL;
+        ```
     2. LIKE 
+        ```
         %x — will select all values that begin with x
         %x% — will select all values that include x
         x% — will select all values that end with x
         x%y — will select all values that begin with x and end with y
         _x% — will select all values have x as the second character
         x_% — will select all values that begin with x and are at least two characters long. You can add additional _ characters to extend the length requirement, i.e. x___%
+        ```
 
         1. Select records containing `[value]`: 
             ```
@@ -824,6 +833,7 @@ Copyright (C) 2022 Penan Rajput
             ```
     6. DEFAULT
         1. on CREATE TABLE
+            ```
             CREATE TABLE Persons (
                 ID int NOT NULL,
                 LastName varchar(255) NOT NULL,
@@ -831,44 +841,46 @@ Copyright (C) 2022 Penan Rajput
                 Age int,
                 City varchar(255) DEFAULT 'Sandnes'
             );
+            ```
 
-
-
+            ```
             CREATE TABLE Orders (
                 ID int NOT NULL,
                 OrderNumber int NOT NULL,
                 OrderDate date DEFAULT GETDATE()
             );
+            ```
         2. on ALTER TABLE
-
+            ```
             ALTER TABLE Persons
             ALTER City SET DEFAULT 'Sandnes';
-
-
+            ```
+            ```
             ALTER TABLE Persons
             ADD CONSTRAINT df_City
             DEFAULT 'Sandnes' FOR City;
-
-
+            ```
+            ```
             ALTER TABLE Persons
             ALTER COLUMN City SET DEFAULT 'Sandnes';
-
-
+            ```
+            ```
             ALTER TABLE Persons
             MODIFY City DEFAULT 'Sandnes';
-
+            ```
         3. DROP a DEFAULT Constraint
-
+            ```
             ALTER TABLE Persons
             ALTER City DROP DEFAULT;
-
-
+            ```
+            ```
             ALTER TABLE Persons
             ALTER COLUMN City DROP DEFAULT;
-
-
+            ```
+            ```
             ALTER TABLE Persons
             ALTER COLUMN City DROP DEFAULT;
+            ```
     7. INDEX = used to retrieve data from the database more quickly than otherwise. The users cannot see the indexes, they are just used to speed up searches/queries.
         1. CREATE INDEX Syntax = Creates an index on a table. Duplicate values are allowed:
             ```
@@ -919,6 +931,7 @@ Copyright (C) 2022 Penan Rajput
             ```
     8.  AUTO INCREMENT
         1. Syntax  
+            ```
             CREATE TABLE Persons (
                 Personid int NOT NULL AUTO_INCREMENT,
                 LastName varchar(255) NOT NULL,
@@ -926,8 +939,11 @@ Copyright (C) 2022 Penan Rajput
                 Age int,
                 PRIMARY KEY (Personid)
             );
+            ```
         2. on ALTER TABLE
+            ```
             ALTER TABLE Persons AUTO_INCREMENT=100;
+            ```
 
 
 10. Operators -> Set Operations
