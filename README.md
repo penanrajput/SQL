@@ -1,9 +1,12 @@
 
-Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
+Copyright (C) 2022 Penan Rajput 
+
+<chetanrajput2777c@gmail.com>
 
 
 # SQL Cheatsheet
-1. Initial Queries
+## SINGLE TABLE QUERIES
+1. Initial Queries (User, Schema, DB)
     1. Users functions
 
         1. List all users: 
@@ -61,9 +64,8 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
         4. Deleting databases: 
             ```
             DROP DATABASE [database]; 
-    
             ```
-1. DDL
+1. DDL (create, alter, drop, truncate)
     1. Create
         1. syntax
             ```
@@ -89,15 +91,18 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
             CREATE TABLE products_3  SELECT DISTINCT * FROM products_2;
             ```
         4. CREATE INDEX generates an index for a table. Indexes are used to retrieve data from a database faster.
+            ```
             CREATE INDEX idx_name
             ON customers (name);
+            ```
         
         5. CREATE VIEW creates a virtual table based on the result set of an SQL statement. A view is like a regular table (and can be queried like one), but it is not saved as a permanent table in the database.
-
+            ```
             CREATE VIEW [Bob Customers] AS
             SELECT name, age
             FROM customers
             WHERE name = ‘Bob’;
+            ```
 
         
     2. Drop
@@ -188,9 +193,9 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
     4. truncate = Delete all records in a table: 
         1. syntax
             ```
-            truncate table {table_name};    
+            TRUNCATE table {table_name};    
             ```
-2. DML
+2. DML (insert, update, delete)
     1. insert
         1. insert 1 rows
             ```
@@ -254,7 +259,8 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
             (This also resets the incrementing counter for auto generated columns like an id column.)
 
 
-4. DQL
+4. DQL (select)
+
     1. select
         1. Selecting specific records: 
             ```
@@ -365,16 +371,15 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
         EXPLAIN SELECT * FROM [table];
         ```
 5. Date
-    1. where + date
-        ```
-        select * from products 
-        where MANUFACTURE_DATE < '2014-01-01';
-        ```
+    ```
+    select * from products 
+    where MANUFACTURE_DATE < '2014-01-01';
+    ```
 
 6. Time 
-    1. MySQL function for datetime input: 
+    1. Current Time: 
         ```
-        NOW()
+        SELECT NOW()
         ```
 
 7. Commands 
@@ -420,7 +425,6 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
             ```
             SELECT * FROM [table] WHERE [column] LIKE '[val_ue]';
             ```    
-            ```
     4. ORDER BY
         1. Select with custom order and only limit: 
             ```
@@ -473,29 +477,40 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
         ```
         SELECT *, (SELECT COUNT([column]) FROM [table]) AS count FROM [table] GROUP BY [column];
         ```
-8. GROUP BY groups rows with the same values into summary rows  + aggregate function
-    SELECT name, AVG(age)
-    FROM customers
-    GROUP BY name;
+    8. GROUP BY groups rows with the same values into summary rows  + aggregate function
+        ```
+        SELECT name, AVG(age)
+        FROM customers
+        GROUP BY name;
+        ```
 
-9. HAVING performs the same action as the WHERE clause. The difference is that HAVING is used for aggregate functions, whereas WHERE doesn’t work with them.
-    SELECT COUNT(customer_id), name
-    FROM customers
-    GROUP BY name
-    HAVING COUNT(customer_id) > 2;
+    9. HAVING is used with group by only \
+    HAVING checks condition. \
+    select -> where,  \
+    group by -> order by
+        ```
+        SELECT COUNT(customer_id), name
+        FROM customers
+        GROUP BY name
+        HAVING COUNT(customer_id) > 2;
+        ```
 
-10. ORDER BY
-    1. ORDER BY sets the order of the returned results. The order will be ascending by default.
+    10. ORDER BY
+        1. ORDER BY sets the order of the returned results. The order will be ascending by default.
+            ```
+            SELECT name
+            FROM customers
+            ORDER BY age;
+            ```
+        2. DESC
+        DESC will return the results in descending order.
+            ```
+            SELECT name
+            FROM customers
+            ORDER BY age DESC;
+            ```
 
-    SELECT name
-    FROM customers
-    ORDER BY age;
-    2. DESC
-    DESC will return the results in descending order.
-
-    SELECT name
-    FROM customers
-    ORDER BY age DESC;
+## MULTIPLE TABLE QUERIES
 
 8. JOINs = Multiple tables (Types = INNER, LEFT, RIGHT, FULL)
 
@@ -518,70 +533,527 @@ Copyright (C) 2022 Penan Rajput <chetanrajput2777c@gmail.com>
     
 
 
-        4. INNER JOIN
-            INNER JOIN selects records that have matching values in both tables.
-
-            SELECT name
-            FROM customers
-            INNER JOIN orders
-            ON customers.customer_id = orders.customer_id;
-
-        5. LEFT JOIN
-            LEFT JOIN selects records from the left table that match records in the right table. In the below example the left table is customers.
-
-            SELECT name
-            FROM customers
-            LEFT JOIN orders
-            ON customers.customer_id = orders.customer_id;
-        6. RIGHT JOIN
-            RIGHT JOIN selects records from the right table that match records in the left table. In the below example the right table is orders.
-
-            SELECT name
-            FROM customers
-            RIGHT JOIN orders
-            ON customers.customer_id = orders.customer_id;
-
-        7. FULL JOIN
-            FULL JOIN selects records that have a match in the left or right table. Think of it as the “OR” JOIN compared with the “AND” JOIN (INNER JOIN).
-
-            SELECT name
-            FROM customers
-            FULL OUTER JOIN orders
+    4. INNER JOIN
+        INNER JOIN selects records that have matching values in both tables.
+        ```
+        SELECT name
+        FROM customers
+        INNER JOIN orders
         ON customers.customer_id = orders.customer_id;
-
-        8. EXISTS
-            EXISTS is used to test for the existence of any record in a subquery.
-
-            SELECT name
-            FROM customers
-            WHERE EXISTS
-            (SELECT order FROM ORDERS WHERE customer_id = 1);
-
-
-
-
-
-
-
-
-
-
-
-
-11. Others 
-    20. Export a database dump (more info [here](http://stackoverflow.com/a/21091197/1815847)): 
-        ```
-        mysqldump -u [username] -p [database] > db_backup.sql
         ```
 
-    21. Use `--lock-tables=false` option for locked tables (more info [here](http://stackoverflow.com/a/104628/1815847)).
+    5. LEFT JOIN
+        LEFT JOIN selects records from the left table that match records in the right table. In the below example the left table is customers.
+        ```
+        SELECT name
+        FROM customers
+        LEFT JOIN orders
+        ON customers.customer_id = orders.customer_id;
+        ```
+    6. RIGHT JOIN
+        RIGHT JOIN selects records from the right table that match records in the left table. In the below example the right table is orders.
+        ```
+        SELECT name
+        FROM customers
+        RIGHT JOIN orders
+        ON customers.customer_id = orders.customer_id;
+        ```
 
-    22. Import a database dump (more info [here](http://stackoverflow.com/a/21091197/1815847)): 
+    7. FULL JOIN
+        FULL JOIN selects records that have a match in the left or right table. Think of it as the “OR” JOIN compared with the “AND” JOIN (INNER JOIN).
         ```
-        mysql -u [username] -p -h localhost [database] < db_backup.sql
+        SELECT name
+        FROM customers
+        FULL OUTER JOIN orders
+        ON customers.customer_id = orders.customer_id;
         ```
 
-    23. Logout: 
+    8. EXISTS
+        EXISTS is used to test for the existence of any record in a subquery.
         ```
-        exit;
+        SELECT name
+        FROM customers
+        WHERE EXISTS
+        (SELECT order FROM ORDERS WHERE customer_id = 1);
         ```
+
+
+10. CONSTRAINTS & KEYS
+    ```
+    Constraints are commonly used in SQL are :
+
+    1. NOT NULL - Ensures that a column cannot have a NULL value
+
+    2. UNIQUE - Ensures that all values in a column are different
+
+    3. PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+
+    4. FOREIGN KEY - Prevents actions that would destroy links between tables
+
+    5. CHECK - Ensures that the values in a column satisfies a specific condition
+
+    6. DEFAULT - Sets a default value for a column if no value is specified
+
+    7. CREATE INDEX - Used to create and retrieve data from the database very quickly
+    ```
+    1. NOT NULL
+        1. on CREATE TABLE
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255) NOT NULL,
+            Age int
+            );
+            ```
+        2. on ALTER TABLE
+            ```
+            ALTER TABLE Persons
+            MODIFY Age int NOT NULL;
+            ```
+    2. UNIQUE
+        1. on CREATE TABLE
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL UNIQUE,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int
+            );
+            ```
+
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int,
+            UNIQUE (ID)
+            );
+            ```
+
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int,
+            CONSTRAINT UC_Person UNIQUE (ID,LastName)
+            );
+            ```
+        2. on ALTER TABLE
+            ```
+            ALTER TABLE Persons
+            ADD UNIQUE (ID);
+            ```
+
+
+            ```
+            ALTER TABLE Persons
+            ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+            ```
+        3. DROP a UNIQUE Constraint
+            ```
+            ALTER TABLE Persons
+            DROP INDEX UC_Person;
+            ```
+           
+
+            ```
+            ALTER TABLE Persons
+            DROP CONSTRAINT UC_Person;
+            ```
+
+    1. PRIMARY KEYS
+        1. IMPLICITELY on create table
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int,
+            PRIMARY KEY (ID)
+            );
+            ```
+
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL PRIMARY KEY,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int
+            );
+            ```
+
+            ```
+            CREATE TABLE Persons (
+            ID int NOT NULL,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int,
+            CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)
+            );
+            ```
+        2. EXPLICITELY on alter table
+            ```
+            ALTER TABLE Persons
+            ADD PRIMARY KEY (ID);
+            ```
+
+            ```
+            ALTER TABLE Persons
+            ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
+            ```
+        3.  DROP a PRIMARY KEY Constraint
+            ```
+            ALTER TABLE Persons
+            DROP PRIMARY KEY;
+            ```
+
+            ```
+            ALTER TABLE Persons
+            DROP CONSTRAINT PK_Person;
+            ```
+
+    4. FOREIGN KEY
+        1. on CREATE TABLE
+            ```
+            CREATE TABLE Orders (
+                OrderID int NOT NULL,
+                OrderNumber int NOT NULL,
+                PersonID int,
+                PRIMARY KEY (OrderID),
+                FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+            );
+            ```
+
+             ```
+            CREATE TABLE Orders (
+            OrderID int NOT NULL PRIMARY KEY,
+            OrderNumber int NOT NULL,
+            PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
+            );
+            ```
+
+            ```
+            CREATE TABLE Orders (
+            OrderID int NOT NULL,
+            OrderNumber int NOT NULL,
+            PersonID int,
+            PRIMARY KEY (OrderID),
+            CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+            REFERENCES Persons(PersonID)
+            );
+             ```
+
+        2. on ALTER TABLE
+            ```
+            ALTER TABLE Orders
+            ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+            ```
+
+            ```
+            ALTER TABLE Orders
+            ADD CONSTRAINT FK_PersonOrder
+            FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+            ```
+
+        3. DROP a FOREIGN KEY Constraint
+
+            ```
+            ALTER TABLE Orders
+            DROP FOREIGN KEY FK_PersonOrder;
+            ```
+
+            ```
+            ALTER TABLE Orders
+            DROP CONSTRAINT FK_PersonOrder;
+            ```
+
+    5. CHECK
+        1. on CREATE TABLE
+            ```
+            CREATE TABLE Persons (
+                ID int NOT NULL,
+                LastName varchar(255) NOT NULL,
+                FirstName varchar(255),
+                Age int,
+                CHECK (Age>=18)
+            );
+            ```
+
+            ```
+            CREATE TABLE Persons (
+                ID int NOT NULL,
+                LastName varchar(255) NOT NULL,
+                FirstName varchar(255),
+                Age int CHECK (Age>=18)
+            );
+            ```
+
+
+            ```
+            CREATE TABLE Persons (
+                ID int NOT NULL,
+                LastName varchar(255) NOT NULL,
+                FirstName varchar(255),
+                Age int,
+                City varchar(255),
+                CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+            );
+            ```
+        2. on ALTER TABLE
+            ```
+            ALTER TABLE Persons
+            ADD CHECK (Age>=18);
+            ```
+
+            ```
+            ALTER TABLE Persons
+            ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
+            ```
+        3. DROP a CHECK Constraint
+            ```
+            ALTER TABLE Persons
+            DROP CONSTRAINT CHK_PersonAge;
+            ```
+        
+            ```
+            ALTER TABLE Persons
+            DROP CHECK CHK_PersonAge;
+            ```
+    6. DEFAULT
+        1. on CREATE TABLE
+            CREATE TABLE Persons (
+                ID int NOT NULL,
+                LastName varchar(255) NOT NULL,
+                FirstName varchar(255),
+                Age int,
+                City varchar(255) DEFAULT 'Sandnes'
+            );
+
+
+
+            CREATE TABLE Orders (
+                ID int NOT NULL,
+                OrderNumber int NOT NULL,
+                OrderDate date DEFAULT GETDATE()
+            );
+        2. on ALTER TABLE
+
+            ALTER TABLE Persons
+            ALTER City SET DEFAULT 'Sandnes';
+
+
+            ALTER TABLE Persons
+            ADD CONSTRAINT df_City
+            DEFAULT 'Sandnes' FOR City;
+
+
+            ALTER TABLE Persons
+            ALTER COLUMN City SET DEFAULT 'Sandnes';
+
+
+            ALTER TABLE Persons
+            MODIFY City DEFAULT 'Sandnes';
+
+        3. DROP a DEFAULT Constraint
+
+            ALTER TABLE Persons
+            ALTER City DROP DEFAULT;
+
+
+            ALTER TABLE Persons
+            ALTER COLUMN City DROP DEFAULT;
+
+
+            ALTER TABLE Persons
+            ALTER COLUMN City DROP DEFAULT;
+    7. INDEX = used to retrieve data from the database more quickly than otherwise. The users cannot see the indexes, they are just used to speed up searches/queries.
+        1. CREATE INDEX Syntax = Creates an index on a table. Duplicate values are allowed:
+            ```
+            CREATE INDEX index_name
+            ON table_name (column1, column2, ...);
+            ```
+
+        2. CREATE UNIQUE INDEX Syntax = Creates a unique index on a table. Duplicate values are not allowed:
+
+            ```
+            CREATE UNIQUE INDEX index_name
+            ON table_name (column1, column2, ...);
+            ```
+        3. CREATE INDEX Example
+            The SQL statement below creates an index named "idx_lastname" on the "LastName" column in the "Persons" table:
+
+            ```
+            CREATE INDEX idx_lastname
+            ON Persons (LastName);
+            ```
+
+            If you want to create an index on a combination of columns, you can list the column names within the parentheses, separated by commas:
+
+            ```
+            CREATE INDEX idx_pname
+            ON Persons (LastName, FirstName)
+            ```
+        4. DROP INDEX Statement
+
+            ```
+            DROP INDEX index_name ON table_name;
+            ```
+
+
+            ```
+            DROP INDEX table_name.index_name;
+            ```
+
+
+            ```
+            DROP INDEX index_name;
+            ```
+
+
+            ```
+            ALTER TABLE table_name
+            DROP INDEX index_name;
+            ```
+    8.  AUTO INCREMENT
+        1. Syntax  
+            CREATE TABLE Persons (
+                Personid int NOT NULL AUTO_INCREMENT,
+                LastName varchar(255) NOT NULL,
+                FirstName varchar(255),
+                Age int,
+                PRIMARY KEY (Personid)
+            );
+        2. on ALTER TABLE
+            ALTER TABLE Persons AUTO_INCREMENT=100;
+
+
+10. Operators -> Set Operations
+    1. UNION operator
+        1. UNION = only distinct values
+            1. Syntax
+                ```
+                SELECT column_name(s) FROM table1
+                UNION
+                SELECT column_name(s) FROM table2;
+                ```
+            2. Ex 1
+                ```
+                SELECT City FROM Customers
+                UNION
+                SELECT City FROM Suppliers
+                ORDER BY City;
+                ```
+        2. UNION ALL = + allows duplicate values
+            1. Syntax
+                ```
+                SELECT column_name(s) FROM table1
+                UNION ALL
+                SELECT column_name(s) FROM table2;
+                ```
+            2. Ex 1
+                ```
+                SELECT City FROM Customers
+                UNION ALL
+                SELECT City FROM Suppliers
+                ORDER BY City;
+                ```
+        3. UNION + WHERE
+            1. Ex 1
+                ```
+                SELECT City, Country FROM Customers
+                WHERE Country='Germany'
+                UNION
+                SELECT City, Country FROM Suppliers
+                WHERE Country='Germany'
+                ORDER BY City;
+                ```
+        4. UNION ALL + WHERE
+            1. Ex 1
+                ```
+                SELECT City, Country FROM Customers
+                WHERE Country='Germany'
+                UNION ALL
+                SELECT City, Country FROM Suppliers
+                WHERE Country='Germany'
+                ORDER BY City;
+                ```
+    2. INTERSECT
+        1. Syntax
+            ```
+            SELECT column1 [, column2 ]
+            FROM table1 [, table2 ]
+            [WHERE condition]
+
+            INTERSECT
+
+            SELECT column1 [, column2 ]
+            FROM table1 [, table2 ]
+            [WHERE condition]
+            ```
+        2. Ex 1
+            ```
+            SELECT  ID, NAME, AMOUNT, DATE
+                FROM CUSTOMERS
+                LEFT JOIN ORDERS
+                ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID
+
+            INTERSECT
+
+            SELECT  ID, NAME, AMOUNT, DATE
+                FROM CUSTOMERS
+                RIGHT JOIN ORDERS
+                ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+            ```
+
+    3. MINUS
+
+
+
+11. SUBQUERIES
+    1. Single Row
+        ```
+        SELECT id, last_name, salary
+        FROM employee
+        WHERE salary = (
+            SELECT MAX(salary)
+            FROM employee
+        );
+        ```
+
+    2. Multi Row 
+        ```
+        SELECT id, last_name, salary
+        FROM employee
+        WHERE salary IN (
+            SELECT salary
+            FROM employee
+            WHERE last_name LIKE 'C%'
+        );
+        ```
+
+12. Operators
+    ```
+    ALL	-> TRUE if all of the subquery values meet the condition	
+
+    AND	-> TRUE if all the conditions separated by AND is TRUE	
+
+    ANY	-> TRUE if any of the subquery values meet the condition	
+
+    BETWEEN	-> TRUE if the operand is within the range of comparisons	
+
+    EXISTS	-> TRUE if the subquery returns one or more records	
+
+    IN -> TRUE if the operand is equal to one of a list of expressions	
+    
+    LIKE -> TRUE if the operand matches a pattern	
+
+    NOT	-> Displays a record if the condition(s) is NOT TRUE	
+
+    OR -> TRUE if any of the conditions separated by OR is TRUE	
+
+    SOME -> TRUE if any of the subquery values meet the condition
+
+    ```
