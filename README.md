@@ -65,7 +65,24 @@ Copyright (C) 2022 Penan Rajput
             ```
             DROP DATABASE [database]; 
             ```
-1. DDL (create, alter, drop, truncate)
+2. Datatype
+    1. NUMERIC
+        1. INT: Whole numbers
+        2. Float(m, d) : decimal numbers (approx)
+        3. decimal(m, d) : decimal numbers (precise)
+    2. NON-NUMERIC
+        1. CHAR(N) : Fixed length character
+        2. VARCHAR(N) : Varying length character
+        3. ENUM('M','F') : Value from a defined list
+        4. BOOLEAN : True of False values
+    3. DATA AND TIME TYPES
+        1. DATE : Date (YYYY-MM-DD)
+        2. DATETIME : Date and the time (YYYY-MM-DD HH-MM-SS)
+        3. TIME : Time (HHH-MM-SS)
+        4. YEAR : Year (YYYY)
+ 
+
+2. DDL (create, alter, drop, truncate)
     1. Create
         1. syntax
             ```
@@ -127,14 +144,10 @@ Copyright (C) 2022 Penan Rajput
             ```    
         1. Adding a column with an unique, auto-incrementing ID
             ```
-            ALTER TABLE [table] ADD COLUMN [column] int NOT NULL AUTO_INCREMENT PRIMARY KEY;
+            ALTER TABLE [table] 
+            ADD COLUMN [column] int NOT NULL AUTO_INCREMENT PRIMARY KEY;
             ```
-        2. change datatype length
-            ```
-            ALTER TABLE products_2 
-            MODIFY COLUMN productID int(8);
-
-            ```
+      
         3. delete 1 column 
             ```
             ALTER TABLE products
@@ -176,18 +189,41 @@ Copyright (C) 2022 Penan Rajput
             ```
             ALTER TABLE [table] DROP COLUMN [column];
             ```
+        9. COLUMN NAME CHANGE
+            ```
+            ```
     4. Alter + permanent way
         1. How to sort a MYSQL table in a permanent way?
-            ```
-            ALTER TABLE tablename ORDER BY columnname ASC;
-            ```
+            1. Syntax
+                ```
+                ALTER TABLE tablename ORDER BY columnname ASC;
+                ```
+            2. Ex-1
 
         2. How to rename a SQL Column in permanent way ?
-            ```
-            ALTER TABLE column_name CHANGE oldname newname datatype(size);
-
-            ALTER TABLE customers CHANGE CUST_ID ID int(4);
-            ```
+            1. Syntax
+                ```
+                ALTER TABLE {column_name} 
+                CHANGE {oldname} {newname} {datatype(size)};
+                ```
+            1. Ex-1 
+                ```
+                ALTER TABLE customers 
+                CHANGE CUST_ID ID int(4);
+                ```
+        3.  Change datatype DATA TYPE
+            1. Syntax
+                ```
+                ALTER TABLE {table_name} 
+                MODIFY COLUMN {column_name} {new_datatype(new_size)};
+                ```
+                
+            2. Ex 1
+                ```
+                ALTER TABLE products_2 
+                MODIFY COLUMN productID int(8);
+                ```
+            
 
 
     4. truncate = Delete all records in a table: 
@@ -588,6 +624,12 @@ Copyright (C) 2022 Penan Rajput
 
 
 10. CONSTRAINTS & KEYS
+
+    show all constraints
+    ```
+        select * from information_schema.table_constraints
+        where constraint_schema = 'db_name';
+    ```
     ```
     Constraints are commonly used in SQL are :
 
@@ -595,7 +637,7 @@ Copyright (C) 2022 Penan Rajput
 
     2. UNIQUE - Ensures that all values in a column are different
 
-    3. PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+    3. PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table (UNIQUE + NOT NULL)
 
     4. FOREIGN KEY - Prevents actions that would destroy links between tables
 
@@ -651,28 +693,46 @@ Copyright (C) 2022 Penan Rajput
             );
             ```
         2. on ALTER TABLE
-            ```
-            ALTER TABLE Persons
-            ADD UNIQUE (ID);
-            ```
+            1. without constraint_name
 
+                ```
+                ALTER TABLE Persons
+                ADD UNIQUE ({column_name});
+                ```
+            2. EX-1
+                
+                ```
+                ALTER TABLE Persons
+                ADD UNIQUE (ID);
+                ```
 
-            ```
-            ALTER TABLE Persons
-            ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
-            ```
+            3. with constraint_name
+
+                ```
+                ALTER TABLE Persons
+                ADD CONSTRAINT {constraint_name} 
+                UNIQUE (column_name1, column_name2);
+                ```
+            4. EX-2
+                 ```
+                ALTER TABLE Persons
+                ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+                ```
         3. DROP a UNIQUE Constraint
-            ```
-            ALTER TABLE Persons
-            DROP INDEX UC_Person;
-            ```
-           
+            1. by INDEX 
 
-            ```
-            ALTER TABLE Persons
-            DROP CONSTRAINT UC_Person;
-            ```
+                ```
+                ALTER TABLE Persons
+                DROP INDEX UC_Person;
+                ```
 
+           2. by CONSTRAINT
+
+                ```
+                ALTER TABLE Persons
+                DROP CONSTRAINT UC_Person;
+                ```
+            
     1. PRIMARY KEYS
         1. IMPLICITELY on create table
             ```
@@ -756,28 +816,47 @@ Copyright (C) 2022 Penan Rajput
              ```
 
         2. on ALTER TABLE
-            ```
-            ALTER TABLE Orders
-            ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
-            ```
-
-            ```
-            ALTER TABLE Orders
-            ADD CONSTRAINT FK_PersonOrder
-            FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
-            ```
+            1. without constraint_name
+                ```
+                ALTER TABLE Orders
+                ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+                ```
+            2. with costraint_name
+                ```
+                ALTER TABLE Orders
+                ADD CONSTRAINT {constraint_name}
+                FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+                ```
+            3. Ex - 1
+                ```
+                ALTER TABLE Orders
+                ADD CONSTRAINT FK_PersonOrder
+                FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+                ```
 
         3. DROP a FOREIGN KEY Constraint
+            1. by FOREIGN KEY {constraint_name}
+                ```
+                ALTER TABLE Orders
+                DROP FOREIGN KEY {constraint_name};
+                ```
+            2. Ex 1
+                  ```
+                ALTER TABLE Orders
+                DROP FOREIGN KEY FK_PersonOrder;
+                ```
 
-            ```
-            ALTER TABLE Orders
-            DROP FOREIGN KEY FK_PersonOrder;
-            ```
+            2. by CONSTRAINT {constraint_name}
+                 ```
+                ALTER TABLE Orders
+                DROP CONSTRAINT {constraint_name};
+                ```
+            4. Ex 1
+                ```
+                ALTER TABLE Orders
+                DROP CONSTRAINT FK_PersonOrder;
+                ```
 
-            ```
-            ALTER TABLE Orders
-            DROP CONSTRAINT FK_PersonOrder;
-            ```
 
     5. CHECK
         1. on CREATE TABLE
