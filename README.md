@@ -1152,3 +1152,35 @@ Copyright (C) 2022 Penan Rajput
     SOME -> TRUE if any of the subquery values meet the condition
 
     ```
+
+
+13. VIEW [[GFG Link]](https://www.geeksforgeeks.org/sql-views/)
+    1. Basics
+        1. Create View - Syntax
+
+            ```
+            CREATE VIEW <VIEW_NAME> AS SELECT <COLUMN_NAME(S)> FROM <TABLE_NAME>;
+            ```
+
+        2. Create - EXAMPLE 1
+            ```
+            CREATE VIEW <view_name> AS 
+            SELECT <Column_Names(S)> 
+            FROM <Table_Name> 
+            WHERE <Condition>;
+            ```
+        3. Drop View -  Syntax
+            ```
+            DROP VIEW <View_Name>;
+            ```
+        4. Drop View - Example
+            ```
+            DROP VIEW MarksView;
+            ```
+        5. Updating View - Syntax
+        [[GFG Link]](https://www.geeksforgeeks.org/sql-views/#:~:text=DROP%20VIEW%20MarksView%3B-,UPDATING%20VIEWS,-There%20are%20certain)
+    2. Create 
+
+
+Some Important Notes
+1. [Slideshare - SQL vs MySQL vs Oracle Syntax Difference](https://www.slideshare.net/SteveStarc/sql-mysqloracle) 
