@@ -1180,6 +1180,17 @@ Copyright (C) 2022 Penan Rajput
         5. Updating View - Syntax
         [[GFG Link]](https://www.geeksforgeeks.org/sql-views/#:~:text=DROP%20VIEW%20MarksView%3B-,UPDATING%20VIEWS,-There%20are%20certain)
     2. Create 
+14. PRACTICAL HACKS
+    1. Maintain order of search
+     ```
+    ORDER BY CASE ItemId
+        WHEN 9 THEN 1
+        WHEN 1 THEN 2
+        ELSE        3
+        END;
+     ```
+        
+
 
 
 Some Important Notes
