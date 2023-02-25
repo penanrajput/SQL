@@ -1182,13 +1182,17 @@ Copyright (C) 2022 Penan Rajput
     2. Create 
 14. PRACTICAL HACKS
     1. Maintain order of search
-     ```
-    ORDER BY CASE ItemId
-        WHEN 9 THEN 1
-        WHEN 1 THEN 2
-        ELSE        3
-        END;
-     ```
+        ```
+        ORDER BY CASE ItemId
+            WHEN 9 THEN 1
+            WHEN 1 THEN 2
+            ELSE        3
+            END;
+        ```
+        Reference Links: <br />
+            1. https://stackoverflow.com/questions/15155930/how-do-i-preserve-the-order-of-a-sql-query-using-the-in-command <br />
+            2. https://stackoverflow.com/questions/866465/order-by-the-in-value-list  <br />
+            3. https://stackoverflow.com/questions/2813884/how-do-you-keep-the-order-using-select-where-in
         
 
 
