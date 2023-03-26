@@ -1204,19 +1204,21 @@ Copyright (C) 2022 Penan Rajput
 
         insert into t_left values(50), (60);
         insert into t_right values(50);
+        ```
 
-
-        --LEFT JOIN with IS NULL
+        LEFT JOIN with IS NULL
+        ```
         SELECT  l.*
         FROM    t_left l
         LEFT JOIN
                 t_right r
         ON      r.value = l.value
         WHERE   r.value IS NULL;
+        ```
 
 
-
-        --NOT IN
+        NOT IN
+        ```
         SELECT  l.*
         FROM    t_left l
         WHERE   l.value NOT IN
@@ -1224,10 +1226,11 @@ Copyright (C) 2022 Penan Rajput
                 SELECT  value
                 FROM    t_right r
                 );
+        ```
 
 
-
-        --NOT EXISTS
+        NOT EXISTS
+        ```
         SELECT  l.*
         FROM    t_left l
         WHERE   NOT EXISTS
@@ -1236,27 +1239,35 @@ Copyright (C) 2022 Penan Rajput
                 FROM    t_right r
                 WHERE   r.value = l.value
                 );
+        ```
                 
                 
                 
-        --EXCEPT
+        EXCEPT
+        ```
         SELECT l.* FROM
         t_left l
         EXCEPT
         SELECT r.value FROM
         t_right r;
+        ```
 
-        -- OUTPUT
+        OUTPUT
+        ```
         value
         60
-
-        TIPS: 
-        IDE : 
         ```
         
+        REFERENCE LINKS
 
+        1. https://dba.stackexchange.com/questions/37627/identifying-which-values-do-not-match-a-table-row/37628#37628?newreg=2040ae28dfd141978710f03d2fa6630f
+        2. https://dba.stackexchange.com/questions/83684/except-operator-vs-not-in
+        3. https://stackoverflow.com/questions/2973558/select-a-value-where-it-doesnt-exist-in-another-table
+        4. https://stackoverflow.com/questions/12048633/sql-query-to-find-record-with-id-not-in-another-table
+        5. https://stackoverflow.com/questions/28945251/sql-server-select-n-from-values0-0-0-0-tn
 
 
 Some Important Notes
 1. [Slideshare - SQL vs MySQL vs Oracle Syntax Difference](https://www.slideshare.net/SteveStarc/sql-mysqloracle) 
 2. [IDE MS SQL SERVER](https://onecompiler.com/sqlserver)
+3. [Temp Table Creation for Experiment](https://stackoverflow.com/questions/1564956/how-can-i-select-from-list-of-values-in-sql-server)
